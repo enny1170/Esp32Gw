@@ -64,21 +64,21 @@
 
 // Set the hostname for the WiFi Client. This is the hostname
 // it will pass to the DHCP server if not static.
-#define MY_HOSTNAME "ESP32_MQTT_GW"
+#define MY_HOSTNAME "ESP32_GW"
 
 // Enable MY_IP_ADDRESS here if you want a static ip address (no DHCP)
-//#define MY_IP_ADDRESS 192,168,178,87
+#define MY_IP_ADDRESS 195,147,158,202
 
 // If using static ip you can define Gateway and Subnet address as well
-//#define MY_IP_GATEWAY_ADDRESS 192,168,178,1
-//#define MY_IP_SUBNET_ADDRESS 255,255,255,0
+#define MY_IP_GATEWAY_ADDRESS 195,147,158,90
+#define MY_IP_SUBNET_ADDRESS 255,255,255,0
 
 #ifndef MQTTMODE
 // The port to keep open on node server mode
 #define MY_PORT 5003
 
 // How many clients should be able to connect to this gateway (default 1)
-#define MY_GATEWAY_MAX_CLIENTS 2
+#define MY_GATEWAY_MAX_CLIENTS 4
 #endif
 #ifdef MQTTMODE
 // MQTT broker ip address.
@@ -88,6 +88,7 @@
 #define MY_PORT 1883
 #endif
 
+#include <Arduino.h>
 #include <MySensors.h>
 #include <FS.h>
 #include <SPIFFS.h>
@@ -105,6 +106,9 @@ AsyncEventSource events("/events");
 const char * hostName = "esp-async";
 const char * http_username = "admin";
 const char * http_password = "admin";
+
+//decalrations
+void onWsEvent(AsyncWebSocket * server, AsyncWebSocketClient * client, AwsEventType type, void * arg, uint8_t *data, size_t len);
 
 void setup()
 {
@@ -219,6 +223,7 @@ void presentation()
 
 void loop()
 {
+  ArduinoOTA.handle();
 	// Send locally attech sensors data here
 }
 
